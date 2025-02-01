@@ -31,6 +31,7 @@ body {
   width: 100%;
   height: 100%;
   filter: blur(0vmin);
+  z-index: -1;
   background: url('your-image.jpg') no-repeat center center/cover;
   filter: blur(3px); /* Blurs the image */
 }
@@ -111,6 +112,27 @@ body {
 }
 .flower--3 .flower__line__leaf--4 {
   animation: blooming-leaf-left var(--fl-speed) 1.9s backwards;
+
+
+}
+
+
+.flower--4 {
+    left: 20%;
+    transform: scaleX(-1) rotate(-30deg);
+    animation: moving-flower-4 4s linear infinite;
+}
+
+.flower--5 {
+    left: 50%;
+    transform: scaleX(-1) rotate(30deg);
+    animation: moving-flower-5 4s linear infinite;
+}
+
+.flower--6 {
+    left: 80%;
+    transform: scaleX(-1) rotate(-15deg);
+    animation: moving-flower-6 4s linear infinite;
 }
 .flower__leafs {
   position: relative;
