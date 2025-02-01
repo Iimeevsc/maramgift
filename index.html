@@ -34,286 +34,297 @@
                cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23ab30f3" stroke-width="2"><path d="M21 3L3 21"/><path d="M18 6L15 9"/><path d="M9 15L6 18"/></svg>') 16 16, auto;
            }
    
-           /* Hogwarts Message Box */
-           .hogwarts-message {
-               position: absolute;
-               top: 20px;
-               left: 50%;
-               transform: translateX(-50%);
-               z-index: 9999;
-               color: var(--light-text);
-               font-family: 'Cinzel Decorative', cursive;
-               text-align: center;
-               padding: 20px;
-               background: rgba(106, 13, 173, 0.8); /* Semi-transparent purple */
-               border: 2px solid var(--magic-sparkle);
-               border-radius: 10px;
-               max-width: 80%;
-               animation: lumos 2s infinite alternate;
-               box-shadow: 0 0 20px var(--magic-sparkle);
-               transition: opacity 0.5s ease-in-out;
-           }
-   
-           @keyframes lumos {
-               0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
-               100% { transform: translateX(-50%) scale(1.05); opacity: 1; }
-           }
-   
-           /* Glowing Text */
-           .glow {
-               font-size: 1.2em;
-               font-weight: bold;
-               color: var(--magic-sparkle);
-               text-shadow: 0 0 10px var(--magic-sparkle), 0 0 20px var(--magic-sparkle), 0 0 30px var(--magic-sparkle);
-               animation: glow 1.5s infinite alternate;
-           }
-   
-           @keyframes glow {
-               0% { text-shadow: 0 0 10px var(--magic-sparkle), 0 0 20px var(--magic-sparkle), 0 0 30px var(--magic-sparkle); }
-               100% { text-shadow: 0 0 20px var(--magic-sparkle), 0 0 40px var(--magic-sparkle), 0 0 60px var(--magic-sparkle); }
-           }
-   
-           /* Falling Stars */
-           .falling-star {
-               position: fixed;
-               width: 50px;
-               height: 50px;
-               background: url('starsimage.png') no-repeat center center / contain;
-               animation: fall 26s linear infinite;
-               z-index: 1000;
+        /* Hogwarts Message Box */
+        .hogwarts-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            color: var(--light-text);
+            font-family: 'Cinzel Decorative', cursive;
+            text-align: center;
+            padding: 15px;
+            background: rgba(106, 13, 173, 0.9);
+            border: 2px solid var(--magic-sparkle);
+            border-radius: 10px;
+            width: 85%;
+            max-width: 600px;
+            box-shadow: 0 0 20px var(--magic-sparkle);
+            transition: opacity 0.3s ease-in-out;
+            will-change: transform, opacity;
+            animation: lumos 2s infinite alternate;
+        }
 
-               .particle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.8);
+        /* Animations */
+        @keyframes lumos {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+            100% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px var(--magic-sparkle), 0 0 20px var(--magic-sparkle); }
+            100% { text-shadow: 0 0 20px var(--magic-sparkle), 0 0 40px var(--magic-sparkle); }
+        }
+
+        .glow {
+            font-size: clamp(1rem, 4vw, 1.2em);
+            font-weight: bold;
+            color: var(--magic-sparkle);
+            text-shadow: 0 0 10px var(--magic-sparkle);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        /* Falling Stars */
+        .falling-star {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            will-change: transform;
+            z-index: 1;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% { 
+                transform: translateY(-100vh) rotate(45deg) translateX(-100vh);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(100vh) rotate(45deg) translateX(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Golden Snitch */
+        .golden-snitch-container {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2;
+            will-change: transform;
+            transform: translateZ(0);
+            animation: snitchFlight 15s infinite linear;
+        }
+
+        .snitch {
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(#fff6d5, var(--golden-snitch));
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
-            animation: float 3s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--golden-snitch);
+            position: relative;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-            50% {
-                transform: translate(10px, 10px);
-            }
+        .wing {
+            position: absolute;
+            top: 50%;
+            width: 25px;
+            height: 8px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,215,0,0.3));
+            clip-path: polygon(0 50%, 100% 0, 100% 100%);
+            transform-origin: 0 50%;
         }
 
-    /* Add glow effect */
-    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0); /* White glow */
-    filter: drop-shadow(0 0 20px rgba(193, 0, 252, 0.8)); /* Optional: Adds a soft glow */
+        .wing-left {
+            left: -24px;
+            animation: flapLeft 0.2s infinite alternate ease-in-out;
+        }
 
-           
+        .wing-right {
+            right: -24px;
+            transform: scaleX(-1);
+            animation: flapRight 0.2s infinite alternate ease-in-out;
+        }
 
-           }
-   
-           @keyframes fall {
-               0% { transform: translateY(-100vh) rotate(45deg) translateX(-100vh); opacity: 1; }
-               80% { opacity: 0.7; }
-               100% { transform: translateY(100vh) rotate(45deg) translateX(700vh); opacity: 0; }
-               
-           }
-   
-           /* Golden Snitch */
-           .golden-snitch-container {
-               position: fixed;
-               pointer-events: none;
-               z-index: 1000;
-               animation: snitchFlight 15s infinite linear;
-           }
-   
-           .snitch {
-               width: 12px;
-               height: 12px;
-               background: radial-gradient(#fff6d5, var(--golden-snitch));
-               border-radius: 50%;
-               box-shadow: 0 0 15px var(--golden-snitch);
-               position: relative;
-           }
-   
-           .snitch::after {
-               content: '';
-               position: absolute;
-               width: 100%;
-               height: 100%;
-               background: radial-gradient(#ffffff, transparent);
-               border-radius: 50%;
-               animation: shine 2s infinite;
-           }
-   
-           .wing {
-               position: absolute;
-               top: 50%;
-               width: 25px;
-               height: 8px;
-               background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 215, 0, 0.3));
-               clip-path: polygon(0 50%, 100% 0, 100% 100%);
-               transform-origin: 0 50%;
-           }
-   
-           .wing-left { left: -24px; animation: flapLeft 0.2s infinite alternate ease-in-out; }
-           .wing-right { right: -24px; transform: scaleX(-1); animation: flapRight 0.2s infinite alternate ease-in-out; }
-   
-           @keyframes snitchFlight {
-               0% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(0deg); }
-               25% { left: 50%; top: -50px; transform: translate(-50%, 0) rotate(90deg); }
-               50% { left: calc(100% + 50px); top: 50%; transform: translate(0, -50%) rotate(180deg); }
-               75% { left: 50%; top: calc(100% + 50px); transform: translate(-50%, 0) rotate(270deg); }
-               100% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(360deg); }
-           }
-   
-           @keyframes flapLeft { 0% { transform: rotate(-30deg) scaleY(0.9); } 100% { transform: rotate(30deg) scaleY(1.1); } }
-           @keyframes flapRight { 0% { transform: scaleX(-1) rotate(-30deg) scaleY(0.9); } 100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); } }
-           @keyframes shine { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-   
-           /* Spell Effects */
-           .spell-effect {
-               position: fixed;
-               width: 50px;
-               height: 50px;
-               background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 20%, transparent);
-               border-radius: 50%;
-               animation: spell-burst 1s ease-out;
-               pointer-events: none;
-               transform: translate(-50%, -50%);
-           }
-   
-           @keyframes spell-burst {
-               0% { transform: scale(0.5); opacity: 1; }
-               100% { transform: scale(2); opacity: 0; }
-           }
+        @keyframes snitchFlight {
+            0% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(0deg); }
+            25% { left: 50%; top: -50px; transform: translate(-50%, 0) rotate(90deg); }
+            50% { left: calc(100% + 50px); top: 50%; transform: translate(0, -50%) rotate(180deg); }
+            75% { left: 50%; top: calc(100% + 50px); transform: translate(-50%, 0) rotate(270deg); }
+            100% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(360deg); }
+        }
 
-           /* Navigation Buttons */
-           .nav-buttons {
-               position: absolute;
-               bottom: 20px;
-               left: 50%;
-               transform: translateX(-50%);
-               display: flex;
-               gap: 10px;
-               z-index: 10;
-           }
+        @keyframes flapLeft {
+            0% { transform: rotate(-30deg) scaleY(0.9); }
+            100% { transform: rotate(30deg) scaleY(1.1); }
+        }
 
-           .nav-button {
-               background: var(--hogwarts-purple);
-               border: 2px solid var(--magic-sparkle);
-               border-radius: 5px;
-               color: var(--light-text);
-               padding: 10px 20px;
-               font-family: 'Cinzel Decorative', cursive;
-               cursor: pointer;
-               transition: background 0.3s ease;
-               z-index: 10;
-           }
+        @keyframes flapRight {
+            0% { transform: scaleX(-1) rotate(-30deg) scaleY(0.9); }
+            100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); }
+        }
 
-           .nav-button:hover {
-               background: var(--magic-sparkle);
-           }
-       </style>
-   </head>
-   <body class="not-loaded">
-       <div class="hogwarts-message" id="message-container">
-           <div id="message-1">
-               <h2>⚡ Expecto Patronum! ⚡</h2>
-               <p>Happiness can be found even in the darkest of times,<br> 
-                 if one only remembers to turn on the light."</p>  
-                 <p>- Albus Dumbledore</p>  
-                 <p><span class="glow">Maram</span>,even when shadows whisper and the night feels endless,<br>  
-                   you shine like the brightest Patronus, pushing away the darkness.<br>  
-                   No Dementor can break your spirit, no curse can dim your light.<br>  
-                   Always remember—true magic lies within you.</p>  
-                  
-           </div>
-           <div id="message-2" style="display: none;">
-               <h2>Sherlock Holmes</h2>
-               <p>🕵️‍♂️ “The game is afoot,<span class="glow">Maram</span>!But no mystery is as wonderful as you. In the grand puzzle of life, you are the most brilliant clue—a rare gem, a story worth reading a thousand times.” 📜
-           </div>
+        /* Spell Effect */
+        .spell-effect {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 20%, transparent);
+            border-radius: 50%;
+            animation: spell-burst 1s ease-out forwards;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
 
-           <div id="message-3" style="display: none;">
-            <h2>U like purple right?</h2>
-            <p>💜 “<span class="glow">Maram</span>, like the royal color you adore, you are both bold and graceful, mysterious yet warm. A little magic, a little mystery, and a whole lot of wonder—thatsyou” ✨
+        @keyframes spell-burst {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.7);
+        }
+
+        .nav-button {
+            background: var(--hogwarts-purple);
+            border: 2px solid var(--magic-sparkle);
+            border-radius: 5px;
+            color: var(--light-text);
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: inherit;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-button:active {
+            background: var(--magic-sparkle);
+            transform: scale(0.98);
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .spell-effect {
+                width: 30px;
+                height: 30px;
+            }
+
+            .falling-star {
+                animation-duration: 3s;
+            }
+
+            .hogwarts-message {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body class="not-loaded">
+    <div class="hogwarts-message" id="message-container">
+        <div id="message-1">
+            <h2>⚡ Expecto Patronum! ⚡</h2>
+            <p>Happiness can be found even in the darkest of times,<br>
+                if one only remembers to turn on the light."</p>
+            <p>- Albus Dumbledore</p>
+            <p><span class="glow">Maram</span>, even when shadows whisper and the night feels endless,<br>
+                you shine like the brightest Patronus, pushing away the darkness.<br>
+                No Dementor can break your spirit, no curse can dim your light.<br>
+                Always remember—true magic lies within you.</p>
         </div>
-       </div>
-   
-       <div class="golden-snitch-container">
-           <div class="snitch">
-               <div class="wing wing-left"></div>
-               <div class="wing wing-right"></div>
-           </div>
-       </div>
+        <div id="message-2" style="display: none;">
+            <h2>Sherlock Holmes</h2>
+            <p>🕵️‍♂️ "The game is afoot, <span class="glow">Maram</span>! But no mystery is as wonderful as you. In the grand puzzle of life, you are the most brilliant clue—a rare gem, a story worth reading a thousand times." 📜</p>
+        </div>
+        <div id="message-3" style="display: none;">
+            <h2>U like purple right?</h2>
+            <p>💜 "<span class="glow">Maram</span>, like the royal color you adore, you are both bold and graceful, mysterious yet warm. A little magic, a little mystery, and a whole lot of wonder—thats you" ✨</p>
+        </div>
+    </div>
 
-       <!-- Navigation Buttons -->
-       <div class="nav-buttons">
-           <button class="nav-button" id="prev-button">Previous</button>
-           <button class="nav-button" id="next-button">Next</button>
-       </div>
-   
-       <script>
-           // Falling stars effect
-           function createFallingStar() {
-               const star = document.createElement('div');
-               star.className = 'falling-star';
-               star.style.left = Math.random() * window.innerWidth + 'px';
-               document.body.appendChild(star);
-               star.addEventListener('animationend', () => star.remove());
-           }
-           setInterval(createFallingStar, 500);
+    <div class="golden-snitch-container">
+        <div class="snitch">
+            <div class="wing wing-left"></div>
+            <div class="wing wing-right"></div>
+        </div>
+    </div>
 
-           function createParticles(star) {
-            const numParticles = 10;
-            for (let i = 0; i < numParticles; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                star.appendChild(particle);
+    <div class="nav-buttons">
+        <button class="nav-button" id="prev-button">Previous</button>
+        <button class="nav-button" id="next-button">Next</button>
+    </div>
 
-                const angle = (Math.PI * 2 * i) / numParticles;
-                const distance = Math.random() * 30 + 20;
-                particle.style.left = `${Math.cos(angle) * distance}px`;
-                particle.style.top = `${Math.sin(angle) * distance}px`;
+    <script>
+        // Optimized star creation
+        let lastStarTime = 0;
+        const STAR_INTERVAL = 1000;
 
-                particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
-            }
+        function createFallingStar() {
+            const now = Date.now();
+            if (now - lastStarTime < STAR_INTERVAL) return;
+            
+            const star = document.createElement('div');
+            star.className = 'falling-star';
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(star);
+            
+            setTimeout(() => star.remove(), 3000);
+            lastStarTime = now;
         }
-   
-           // Spell effect on click
-           document.body.addEventListener('click', (e) => {
-               const spell = document.createElement('div');
-               spell.className = 'spell-effect';
-               spell.style.left = `${e.clientX}px`;
-               spell.style.top = `${e.clientY}px`;
-               document.body.appendChild(spell);
-               setTimeout(() => spell.remove(), 1000);
-           });
 
-        // Button functionality for three messages
+        // Message navigation
         const message1 = document.getElementById('message-1');
         const message2 = document.getElementById('message-2');
         const message3 = document.getElementById('message-3');
         const prevButton = document.getElementById('prev-button');
         const nextButton = document.getElementById('next-button');
 
-        let currentMessage = 1; // Track the current message
+        let currentMessage = 1;
 
-        // Function to show a specific message
         function showMessage(messageNumber) {
             message1.style.display = messageNumber === 1 ? 'block' : 'none';
             message2.style.display = messageNumber === 2 ? 'block' : 'none';
             message3.style.display = messageNumber === 3 ? 'block' : 'none';
         }
 
-        // Next button functionality
         nextButton.addEventListener('click', () => {
-            currentMessage = currentMessage < 3 ? currentMessage + 1 : 1; // Cycle through messages 1, 2, 3
+            currentMessage = currentMessage < 3 ? currentMessage + 1 : 1;
             showMessage(currentMessage);
         });
 
-        // Previous button functionality
         prevButton.addEventListener('click', () => {
-            currentMessage = currentMessage > 1 ? currentMessage - 1 : 3; // Cycle through messages 3, 2, 1
+            currentMessage = currentMessage > 1 ? currentMessage - 1 : 3;
             showMessage(currentMessage);
         });
+
+        // Event listeners
+        document.body.addEventListener('click', (e) => {
+            const spell = document.createElement('div');
+            spell.className = 'spell-effect';
+            spell.style.left = `${e.clientX}px`;
+            spell.style.top = `${e.clientY}px`;
+            document.body.appendChild(spell);
+            setTimeout(() => spell.remove(), 1000);
+        });
+
+        document.body.addEventListener('touchstart', (e) => {
+            const spell = document.createElement('div');
+            spell.className = 'spell-effect';
+            spell.style.left = `${e.touches[0].clientX}px`;
+            spell.style.top = `${e.touches[0].clientY}px`;
+            document.body.appendChild(spell);
+            setTimeout(() => spell.remove(), 1000);
+        }, { passive: true });
+
+        // Animation loop
+        function animate() {
+            createFallingStar();
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
     </script>
 </body>
 </html>
