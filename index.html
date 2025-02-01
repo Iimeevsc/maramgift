@@ -10,33 +10,65 @@
     <script src="style.css"></script>
     <audio autoplay loop hidden>
       <source src="background-music.mp3" type="audio/mpeg">
-    
-  </audio>
+    </audio>
   
     <style>
        .glow {
             font-size: 1.2em;
             font-weight: bold;
-            color: #ff00ff; /* Pink glow color */
+            color: #ff00ff;
             text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
             animation: glow 1.5s infinite alternate;
        }
-         /* Add the new CSS code here */
 
-        /* New Harry Potter themed styles */
-        /* Enhanced Harry Potter themed styles */
+        /* New Falling Stars styles */
+        .falling-star {
+          position: fixed;
+          width: 100px;/* Adjust based on image size */
+          height: 100px;/* Adjust based on image size */
+          background: url('starsimage.png') no-repeat center center / contain;
+          animation: fall 26s linear infinite;
+          z-index: 1000;
+    
+        }
+
+        .falling-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 05px;
+            background: linear-gradient(90deg, #9b4dca, transparent);
+            transform: translateY(-50%) translateX(-100%);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(45deg) translateX(-100vh);
+                opacity: 1;
+            }
+            80% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(45deg) translateX(700vh);
+                opacity: 0;
+            }
+        }
+
+        /* Harry Potter themed styles */
         :root {
             --golden-snitch: #edc1ff;
             --hogwarts-blue: #8b23b4;
             --patronus-silver: #e0e0e0;
             --magic-spark: #ab30f3;
         }
-           /* Floating wand cursor */
-           body {
+
+        body {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23ffd700" stroke-width="2"><path d="M21 3L3 21"/><path d="M18 6L15 9"/><path d="M9 15L6 18"/></svg>') 16 16, auto;
         }
 
-        /* Magical sparkles */
         .sparkle {
             position: absolute;
             pointer-events: none;
@@ -57,7 +89,7 @@
             font-family: 'Cinzel Decorative', cursive;
             text-align: center;
             padding: 20px;
-            background: rgba(69, 8, 77, 0.692);
+            background: rgba(77, 4, 87, 0.692);
             border: 2px solid var(--golden-snitch);
             border-radius: 10px;
             max-width: 80%;
@@ -76,15 +108,9 @@
             }
         }
 
-        
-        
         @keyframes starry-night {
-            0% {
-                background-position: 0% 0%;
-            }
-            100% {
-                background-position: 100% 100%;
-            }
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
         }
 
         .flower__light {
@@ -122,201 +148,115 @@
         }
 
         @keyframes portal-spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .golden-snitch-container {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            animation: snitchFlight 15s infinite linear;
+        }
+        
+        .snitch {
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(#fff6d5, #ffd700);
+            border-radius: 50%;
+            box-shadow: 0 0 15px #ffd700;
+            position: relative;
+        }
+        
+        .snitch::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(#ffffff, transparent);
+            border-radius: 50%;
+            animation: shine 2s infinite;
+        }
+        
+        .wing {
+            position: absolute;
+            top: 50%;
+            width: 25px;
+            height: 8px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,215,0,0.3));
+            clip-path: polygon(0 50%, 100% 0, 100% 100%);
+            transform-origin: 0 50%;
+        }
+        
+        .wing-left {
+            left: -24px;
+            animation: flapLeft 0.2s infinite alternate ease-in-out;
+        }
+        
+        .wing-right {
+            right: -24px;
+            transform: scaleX(-1);
+            animation: flapRight 0.2s infinite alternate ease-in-out;
+        }
+        
+        @keyframes snitchFlight {
             0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+                left: -50px;
+                top: 50%;
+                transform: translate(0, -50%) rotate(0deg);
+            }
+            25% {
+                left: 50%;
+                top: -50px;
+                transform: translate(-50%, 0) rotate(90deg);
+            }
+            50% {
+                left: calc(100% + 50px);
+                top: 50%;
+                transform: translate(0, -50%) rotate(180deg);
+            }
+            75% {
+                left: 50%;
+                top: calc(100% + 50px);
+                transform: translate(-50%, 0) rotate(270deg);
             }
             100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+                left: -50px;
+                top: 50%;
+                transform: translate(0, -50%) rotate(360deg);
             }
         }
-
-      .golden-snitch-container {
-        position: fixed;
-        pointer-events: none;
-        z-index: 1000;
-        animation: snitchFlight 15s infinite linear;
-    }
-    
-    .snitch {
-        width: 12px;
-        height: 12px;
-        background: radial-gradient(#fff6d5, #ffd700);
-        border-radius: 50%;
-        box-shadow: 0 0 15px #ffd700;
-        position: relative;
-    }
-    
-    .snitch::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(#ffffff, transparent);
-        border-radius: 50%;
-        animation: shine 2s infinite;
-    }
-    
-    .wing {
-        position: absolute;
-        top: 50%;
-        width: 25px;
-        height: 8px;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,215,0,0.3));
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-        transform-origin: 0 50%;
-    }
-    
-    .wing-left {
-        left: -24px;
-        animation: flapLeft 0.2s infinite alternate ease-in-out;
-    }
-    
-    .wing-right {
-        right: -24px;
-        transform: scaleX(-1);
-        animation: flapRight 0.2s infinite alternate ease-in-out;
-    }
-    
-    @keyframes snitchFlight {
-        0% {
-            left: -50px;
-            top: 50%;
-            transform: translate(0, -50%) rotate(0deg);
-        }
-        25% {
-            left: 50%;
-            top: -50px;
-            transform: translate(-50%, 0) rotate(90deg);
-        }
-        50% {
-            left: calc(100% + 50px);
-            top: 50%;
-            transform: translate(0, -50%) rotate(180deg);
-        }
-        75% {
-            left: 50%;
-            top: calc(100% + 50px);
-            transform: translate(-50%, 0) rotate(270deg);
-        }
-        100% {
-            left: -50px;
-            top: 50%;
-            transform: translate(0, -50%) rotate(360deg);
-        }
-    }
-    
-    @keyframes flapLeft {
-        0% { transform: rotate(-30deg) scaleY(0.9); }
-        100% { transform: rotate(30deg) scaleY(1.1); }
-    }
-    
-    @keyframes flapRight {
-        0% { transform: scaleX(-1) rotate(-30deg) scaleY(0.9); }
-        100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); }
-    }
-    
-    @keyframes shine {
-        0%, 100% { opacity: 0.5; }
-        50% { opacity: 1; }
-    }
-    
-    /* Snitch trail effect */
-    .snitch-trail {
-        position: fixed;
-        pointer-events: none;
-        width: 4px;
-        height: 4px;
-        background: rgba(255, 215, 0, 0.6);
-        border-radius: 50%;
-        animation: fadeTrail 1s forwards;
-    }
-    
-    @keyframes fadeTrail {
-        0% { transform: scale(1); opacity: 0.6; }
-        100% { transform: scale(0); opacity: 0; }
-    }
-    </style>
-    
-    <!-- Add this HTML where you want the Snitch to appear -->
-    <div class="golden-snitch-container">
-        <div class="snitch">
-            <div class="wing wing-left"></div>
-            <div class="wing wing-right"></div>
-        </div>
-    </div>
-    
-    <!-- Add this JavaScript to create the trailing effect -->
-    <script>
-    function createTrail() {
-        const snitch = document.querySelector('.golden-snitch-container');
-        const rect = snitch.getBoundingClientRect();
         
-        const trail = document.createElement('div');
-        trail.className = 'snitch-trail';
-        trail.style.left = (rect.left + rect.width/2) + 'px';
-        trail.style.top = (rect.top + rect.height/2) + 'px';
-        document.body.appendChild(trail);
+        @keyframes flapLeft {
+            0% { transform: rotate(-30deg) scaleY(0.9); }
+            100% { transform: rotate(30deg) scaleY(1.1); }
+        }
         
-        setTimeout(() => trail.remove(), 1000);
-    }
-    
-    // Create trails every 50ms
-    setInterval(createTrail, 50);
-    </script>
-<body class="not-loaded">
-    <!-- Enhanced Harry Potter message -->
-    <div class="hogwarts-message">
-        <h2>⚡ Expecto Patronum! ⚡</h2>
-        <p>Happiness can be found even in the darkest of times,<br> 
-          if one only remembers to turn on the light."</p>  
-          <p>- Albus Dumbledore</p>  
-          <p><span class="glow">Maram</span>,even when shadows whisper and the night feels endless,<br>  
-            you shine like the brightest Patronus, pushing away the darkness.<br>  
-            No Dementor can break your spirit, no curse can dim your light.<br>  
-            Always remember—true magic lies within you.</p>  
-    </div>
-
-    <!-- Magical Portal Effect -->
-    <div class="magic-portal"></div>
-
-    <div class="night"></div>
-    <div class="flowers">
-      <!-- [All existing flower divs remain unchanged] -->
-    </div>
-
-    <script src="java.js"></script>
-    <script>
-        // Enhanced magical effects
-        const audio = new Audio('https://www.soundjay.com/magic/magic-spell-01.mp3');
-        audio.volume = 0.3;
-
-        const patronusColors = ['#ffffff', '#a2d9ff', '#d4f1f9', '#f0ffff'];
+        @keyframes flapRight {
+            0% { transform: scaleX(-1) rotate(-30deg) scaleY(0.9); }
+            100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); }
+        }
         
-        document.body.addEventListener('click', (e) => {
-            // Play sound
-            audio.currentTime = 0;
-            audio.play();
+        @keyframes shine {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .snitch-trail {
+            position: fixed;
+            pointer-events: none;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            animation: fadeTrail 1s forwards;
+        }
+        
+        @keyframes fadeTrail {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(0); opacity: 0; }
+        }
 
-            // Create magical sparks
-            const sparks = document.createElement('div');
-            sparks.className = 'magic-sparks';
-            sparks.style.left = `${e.clientX}px`;
-            sparks.style.top = `${e.clientY}px`;
-            document.body.appendChild(sparks);
-            setTimeout(() => sparks.remove(), 1000);
-
-            // Create patronus trail
-            const patronus = document.createElement('div');
-            patronus.className = 'patronus-trail';
-            patronus.style.left = `${e.clientX}px`;
-            patronus.style.top = `${e.clientY}px`;
-            patronus.style.backgroundColor = patronusColors[Math.floor(Math.random() * patronusColors.length)];
-            document.body.appendChild(patronus);
-            setTimeout(() => patronus.remove(), 2000);
-        });
-    </script>
-    <style>
-        /* Enhanced magic effects */
         .magic-sparks {
             position: fixed;
             width: 100px;
@@ -365,7 +305,91 @@
             }
         }
     </style>
+</head>
+<body class="not-loaded">
+    <div class="hogwarts-message">
+        <h2>⚡ Expecto Patronum! ⚡</h2>
+        <p>Happiness can be found even in the darkest of times,<br> 
+          if one only remembers to turn on the light."</p>  
+          <p>- Albus Dumbledore</p>  
+          <p><span class="glow">Maram</span>,even when shadows whisper and the night feels endless,<br>  
+            you shine like the brightest Patronus, pushing away the darkness.<br>  
+            No Dementor can break your spirit, no curse can dim your light.<br>  
+            Always remember—true magic lies within you.</p>  
+    </div>
+
+    <div class="magic-portal"></div>
+    <div class="night"></div>
+    <div class="flowers">
+        <!-- Your existing flowers HTML structure remains unchanged -->
+    </div>
+
+    <div class="golden-snitch-container">
+        <div class="snitch">
+            <div class="wing wing-left"></div>
+            <div class="wing wing-right"></div>
+        </div>
+    </div>
+
+    <script>
+        // Snitch trail effect
+        function createTrail() {
+            const snitch = document.querySelector('.golden-snitch-container');
+            const rect = snitch.getBoundingClientRect();
+            
+            const trail = document.createElement('div');
+            trail.className = 'snitch-trail';
+            trail.style.left = (rect.left + rect.width/2) + 'px';
+            trail.style.top = (rect.top + rect.height/2) + 'px';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => trail.remove(), 1000);
+        }
+        
+        setInterval(createTrail, 50);
+
+        // Falling stars effect
+        function createFallingStar() {
+            const star = document.createElement('div');
+            star.className = 'falling-star';
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(star);
+            
+            star.addEventListener('animationend', () => {
+                star.remove();
+            });
+        }
+
+        setInterval(createFallingStar, 500);
+
+        // Magical effects
+        const audio = new Audio('https://www.soundjay.com/magic/magic-spell-01.mp3');
+        audio.volume = 0.3;
+
+        const patronusColors = ['#ffffff', '#a2d9ff', '#d4f1f9', '#f0ffff'];
+        
+        document.body.addEventListener('click', (e) => {
+            audio.currentTime = 0;
+            audio.play();
+
+            const sparks = document.createElement('div');
+            sparks.className = 'magic-sparks';
+            sparks.style.left = `${e.clientX}px`;
+            sparks.style.top = `${e.clientY}px`;
+            document.body.appendChild(sparks);
+            setTimeout(() => sparks.remove(), 1000);
+
+            const patronus = document.createElement('div');
+            patronus.className = 'patronus-trail';
+            patronus.style.left = `${e.clientX}px`;
+            patronus.style.top = `${e.clientY}px`;
+            patronus.style.backgroundColor = patronusColors[Math.floor(Math.random() * patronusColors.length)];
+            document.body.appendChild(patronus);
+            setTimeout(() => patronus.remove(), 2000);
+        });
+    </script>
 </body>
+</html>
 </html>
  <body class="not-loaded">
     <div class="night"></div>
