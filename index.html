@@ -60,10 +60,14 @@
             z-index: 2;
             backdrop-filter: blur(5px);
             border-radius: 20px;
-            background: rgba(40, 26, 46, 0.3);
-            border: 1px solid rgba(221, 63, 226, 0);
-            box-shadow: 0 8px 32px rgba(36, 8, 54, 0.3);
-            outline: #1a1a1a
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(221, 63, 226, 0.5); /* Slight border glow */
+            box-shadow: 0 8px 32px rgba(221, 63, 226, 0.6), 
+            0 0 15px rgba(221, 63, 226, 0.8); /* Outer glow effect */
+            outline: 2px solid rgba(221, 63, 226, 0.7);
+            
+            
+            
         }
   /* Animations */
         @keyframes lumos {
@@ -405,13 +409,16 @@
         }
 
         const messages = [
+        "🧐 “When you have eliminated the impossible, whatever remains, however improbable, must be the truth.”  The truth, Maram, is that you are strong, loved, and this sadness will pass. And I must say, your hijab choice was quite brilliant! 💜",
+            "🔍 The case of Maram Feeling Down has only one logical conclusion: You need a reminder that you are truly one-of-a-kind. Imalways here, my dear Watson. Also, thank you for the hijab color decision—it was a moment of pure deduction! 💜",
+            "🕰️ Even the greatest detectives need a break. Take your time, breathe, and know that Im here. Oh, and that hijab? A masterpiece! 💜",
+            "I suspect magic is involved. Tell me the truth, Maram… are you secretly a wizard, or is it just impossible for you not to be effortlessly beautiful?",
             "Maram, even in the darkest times, remember that light always returns—just like magic. You are a Patronus in my life, and Im grateful for you. Also, thank you for letting me choose your hijab color—it made my day! 💜",
             "🦉 If I had an owl, Id send you a letter sealed with magic, reminding you how amazing you are. Dark times pass, and light always returns—just like in every great story. Also, you totally rocked that hijab color! 💜✨",
             "🕯️ Even the Marauders Map wouldnt show a path as bright as yours. You are stronger than any sadness, and Im always here to remind you of that. Thanks for letting me choose your hijab color—it made my day! 💜",
-            "🧐 “When you have eliminated the impossible, whatever remains, however improbable, must be the truth.”  The truth, Maram, is that you are strong, loved, and this sadness will pass. And I must say, your hijab choice was quite brilliant! 💜",
-            "🔍 The case of Maram Feeling Down has only one logical conclusion: You need a reminder that you are truly one-of-a-kind. Imalways here, my dear Watson. Also, thank you for the hijab color decision—it was a moment of pure deduction! 💜",
-            "🕰️ Even the greatest detectives need a break. Take your time, breathe, and know that Im here. Oh, and that hijab? A masterpiece! 💜",
-        ];
+       
+       
+          ];
 
         // Display a random message every time the page is reloaded
         const randomIndex = Math.floor(Math.random() * messages.length);
