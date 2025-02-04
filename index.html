@@ -24,6 +24,84 @@
         <div class="flower-center"></div>
     </div>
     <style>
+ .letter-container {
+      position: fixed;
+      top: -100px; /* Start off-screen */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      cursor: pointer;
+      animation: dropLetter 2s ease-in-out forwards;
+    }
+
+    .letter {
+      width: 80px;
+      height: 60px;
+      background: linear-gradient(45deg, #f3e5ab, #fff8dc);
+      position: relative;
+      transform-origin: center;
+      transition: transform 0.5s;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .letter::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-top: 30px solid #800020;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotateX(180deg);
+      opacity: 0;
+      transition: all 0.5s;
+    }
+
+    .letter.opened {
+      transform: rotateX(180deg);
+    }
+
+    .letter.opened::before {
+      opacity: 1;
+    }
+
+    .seal {
+      width: 25px;
+      height: 25px;
+      background: #800020;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #f3e5ab;
+      font-family: 'Times New Roman', serif;
+      font-size: 16px;
+      transition: opacity 0.3s;
+    }
+
+    .letter.opened .seal {
+      opacity: 0;
+    }
+
+    @keyframes dropLetter {
+      0% {
+        top: -100px;
+      }
+      100% {
+        top: 20px;
+      }
+    
+    }
         @import url('https://fonts.cdnjs.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap');
      /* Harry Potter Purple Theme */
       :root {
@@ -416,8 +494,12 @@
             "Maram, even in the darkest times, remember that light always returns—just like magic. You are a Patronus in my life, and Im grateful for you. Also, thank you for letting me choose your hijab color—it made my day! 💜",
             "🦉 If I had an owl, Id send you a letter sealed with magic, reminding you how amazing you are. Dark times pass, and light always returns—just like in every great story. Also, you totally rocked that hijab color! 💜✨",
             "🕯️ Even the Marauders Map wouldnt show a path as bright as yours. You are stronger than any sadness, and Im always here to remind you of that. Thanks for letting me choose your hijab color—it made my day! 💜",
-       
-       
+            "You are my fire ,The one desire ,Believe when I say ,I want it that way",
+            "Tell me why Ain't nothin' but a heartache",
+            "Tell me why Ain't nothing but a mistake",
+            "Tell me why I never wanna hear you say I want it that way",
+            "If I had a love potion, I wouldn’t need it—because my heart already belongs to you, no spell required. If I were at Hogwarts, I’d spend all my time sneaking into the library just to find a book that could explain how someone could be as amazing as you. But no words, no magic, no story could ever do you justice.",
+            
           ];
 
         // Display a random message every time the page is reloaded
@@ -446,6 +528,29 @@
 </body>
     
 <body class="not-loaded">
+  <body class="not-loaded">
+    <div class="letter-container">
+      <div class="letter">
+        <div class="seal">H</div>
+      </div>
+    </div>
+  
+    <script>
+      const letter = document.querySelector('.letter');
+  
+      // Function to open a new page when the letter is clicked
+      function openNewPage() {
+        // Open a new page (replace 'new-page.html' with the URL of the page you want to open)
+        window.open('maram.html', '_blank');
+      }
+  
+      // Event listener for the letter click
+      letter.addEventListener('click', () => {
+        letter.classList.add('opened'); // Open the letter animation
+        setTimeout(openNewPage, 500); // Open the new page after a short delay
+      });
+    </script>
+  </script>
   <div class="night"></div>
   <div class="flowers">
     <div class="flower flower--1">
@@ -745,6 +850,8 @@
       </div>
     </div>
   </div>
+  </script>
+
   <script src="java.js"></script>
 </body>
 
