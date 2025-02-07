@@ -11,6 +11,10 @@
   <script src="style.css"></script>
     <audio autoplay loop hidden>
       <source src="background-music.mp3" type="audio/mpeg">
+      <audio id="songPlayer" controls style="display: none;">
+        <source src="your-song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
     </audio>
     <div class="magical-flower">
         <div class="petal"></div>
@@ -24,14 +28,230 @@
         <div class="flower-center"></div>
     </div>
     <style>
- .letter-container {
+    /* Enhanced Design */
+    :root {
+      --hogwarts-purple: #6a0dad;
+      --magic-sparkle: #ab30f3;
+      --patronus-silver: #e0e0e0;
+      --golden-snitch: #ffd700;
+      --dark-background: #1a1a1a;
+      --light-text: #ffffff;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--dark-background), #2c2c2c);
+      color: var(--light-text);
+      font-family: 'Cormorant Garamond', serif;
+      text-align: center;
+      overflow: hidden;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(221, 63, 226, 0.5);
+      box-shadow: 0 8px 32px rgba(221, 63, 226, 0.6), 0 0 15px rgba(221, 63, 226, 0.8);
+      animation: float 5s infinite ease-in-out;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      text-shadow: 0 0 15px rgba(161, 63, 226, 0.5);
+      margin-bottom: 1.5rem;
+      letter-spacing: 4px;
+      background: linear-gradient(45deg, #c13fe2, #9e0ff1);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: titleGlow 3s infinite alternate;
+    }
+
+    .quote {
+      font-size: 1.5rem;
+      margin: 20px auto;
+      padding: 2rem;
+      line-height: 1.6;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      border: 1px solid rgba(226, 180, 63, 0);
+      max-width: 700px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    .quote::before, .quote::after {
+      content: '"';
+      font-family: 'Cinzel', serif;
+      font-size: 4rem;
+      position: absolute;
+      opacity: 0.2;
+      color: #c13fe2;
+    }
+
+    .quote::before {
+      top: -10px;
+      left: 10px;
+    }
+
+    .quote::after {
+      bottom: -30px;
+      right: 10px;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 15px rgba(183, 0, 255, 0.3); }
+      100% { text-shadow: 0 0 25px rgba(255, 74, 210, 0.7); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Enhanced Stars */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Enhanced Falling Stars */
+    .falling-star {
       position: fixed;
-      top: -100px; /* Start off-screen */
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+      will-change: transform;
+      z-index: 1;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(45deg) translateX(-100vh); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(45deg) translateX(100vh); opacity: 0; }
+    }
+
+    /* Enhanced Golden Snitch */
+    .golden-snitch-container {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      will-change: transform;
+      transform: translateZ(0);
+      animation: snitchFlight 15s infinite linear;
+    }
+
+    .snitch {
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(#fff6d5, var(--golden-snitch));
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--golden-snitch);
+      position: relative;
+    }
+
+    .wing {
+      position: absolute;
+      top: 50%;
+      width: 25px;
+      height: 8px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,215,0,0.3));
+      clip-path: polygon(0 50%, 100% 0, 100% 100%);
+      transform-origin: 0 50%;
+    }
+
+    .wing-left {
+      left: -24px;
+      animation: flapLeft 0.2s infinite alternate ease-in-out;
+    }
+
+    .wing-right {
+      right: -24px;
+      transform: scaleX(-1);
+      animation: flapRight 0.2s infinite alternate ease-in-out;
+    }
+
+    @keyframes snitchFlight {
+      0% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(0deg); }
+      25% { left: 50%; top: -50px; transform: translate(-50%, 0) rotate(90deg); }
+      50% { left: calc(100% + 50px); top: 50%; transform: translate(0, -50%) rotate(180deg); }
+      75% { left: 50%; top: calc(100% + 50px); transform: translate(-50%, 0) rotate(270deg); }
+      100% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(360deg); }
+    }
+
+    @keyframes flapLeft {
+      0% { transform: rotate(-30deg) scaleY(0.9); }
+      100% { transform: rotate(30deg) scaleY(1.1); }
+    }
+
+    @keyframes flapRight {
+      0% { transform: scaleX(-1) rotate(-30deg) scaleY(0.9); }
+      100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); }
+    }
+
+    /* Enhanced Spell Effect */
+    .spell-effect {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 20%, transparent);
+      border-radius: 50%;
+      animation: spell-burst 1s ease-out forwards;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes spell-burst {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    }
+
+    /* Enhanced Letter Animation */
+    .letter-container {
+      position: fixed;
+      top: -100px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
       cursor: pointer;
-      animation: dropLetter 2s ease-in-out forwards;
+      animation: letterFall 3s ease-in-out forwards;
     }
 
     .letter {
@@ -93,469 +313,514 @@
       opacity: 0;
     }
 
-    @keyframes dropLetter {
-      0% {
-        top: -100px;
-      }
-      100% {
-        top: 20px;
-      }
-    
+    @keyframes letterFall {
+      0% { top: -100px; transform: translateX(-50%) rotate(0deg); }
+      50% { transform: translateX(-50%) rotate(10deg); }
+      75% { transform: translateX(-50%) rotate(-5deg); }
+      100% { top: 100%; transform: translateX(-50%) rotate(0deg); }
     }
-        @import url('https://fonts.cdnjs.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap');
-     /* Harry Potter Purple Theme */
-      :root {
-               --hogwarts-purple: #6a0dad; /* Deep purple */
-               --magic-sparkle: #ab30f3; /* Bright purple */
-               --patronus-silver: #e0e0e0; /* Light silver */
-               --golden-snitch: #ffd700; /* Gold for contrast */
-               --dark-background: #1a1a1a; /* Dark background */
-               --light-text: #ffffff; /* White text */
-           }
 
-        
-        body {
-            background: url(your-image.jpg);
-            backdrop-filter: blur(5px);
-            color: #c300ff;
-            outline: #1a1a1a;
-            font-family: 'Cormorant Garamond', serif;
-            text-align: center;
-            overflow: hidden;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            position: relative;
-            overflow-x: hidden;
-        }
-        .container {
-            max-width: 600px;  /* Reduced the max-width for better mobile view */
-            padding: 2rem;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(5px);
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(221, 63, 226, 0.5); /* Slight border glow */
-            box-shadow: 0 8px 32px rgba(221, 63, 226, 0.6), 
-            0 0 15px rgba(221, 63, 226, 0.8); /* Outer glow effect */
-            outline: 2px solid rgba(221, 63, 226, 0.7);
-            
-            
-            
-        }
-  /* Animations */
-        @keyframes lumos {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-            100% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
-        }
+    @keyframes letterSway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
 
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px var(--magic-sparkle), 0 0 20px var(--magic-sparkle); }
-            100% { text-shadow: 0 0 20px var(--magic-sparkle), 0 0 40px var(--magic-sparkle); }
-        }
-
-        .glow {
-            font-size: clamp(1rem, 4vw, 1.2em);
-            font-weight: bold;
-            color: var(--magic-sparkle);
-            text-shadow: 0 0 10px var(--magic-sparkle);
-            animation: glow 1.5s infinite alternate;
-        }
-     
-        /* Falling Stars */
-        .falling-star {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            will-change: transform;
-            z-index: 1;
-            animation: fall 3s linear forwards;
-        }
-
-        @keyframes fall {
-            0% { 
-                transform: translateY(-100vh) rotate(45deg) translateX(-100vh);
-                opacity: 1;
-            }
-            100% { 
-                transform: translateY(100vh) rotate(45deg) translateX(100vh);
-                opacity: 0;
-            }
-        }
-
-        /* Golden Snitch */
-        .golden-snitch-container {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10;
-            will-change: transform;
-            transform: translateZ(0);
-            animation: snitchFlight 15s infinite linear;
-        }
-
-        .snitch {
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(#fff6d5, var(--golden-snitch));
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--golden-snitch);
-            position: relative;
-        }
-
-        .wing {
-            position: absolute;
-            top: 50%;
-            width: 25px;
-            height: 8px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,215,0,0.3));
-            clip-path: polygon(0 50%, 100% 0, 100% 100%);
-            transform-origin: 0 50%;
-        }
-
-        .wing-left {
-            left: -24px;
-            animation: flapLeft 0.2s infinite alternate ease-in-out;
-        }
-
-        .wing-right {
-            right: -24px;
-            transform: scaleX(-1);
-            animation: flapRight 0.2s infinite alternate ease-in-out;
-        }
-
-        @keyframes snitchFlight {
-            0% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(0deg); }
-            25% { left: 50%; top: -50px; transform: translate(-50%, 0) rotate(90deg); }
-            50% { left: calc(100% + 50px); top: 50%; transform: translate(0, -50%) rotate(180deg); }
-            75% { left: 50%; top: calc(100% + 50px); transform: translate(-50%, 0) rotate(270deg); }
-            100% { left: -50px; top: 50%; transform: translate(0, -50%) rotate(360deg); }
-        }
-
-        @keyframes flapLeft {
-            0% { transform: rotate(-30deg) scaleY(0.9); }
-            100% { transform: rotate(30deg) scaleY(1.1); }
-        }
-
-        @keyframes flapRight {
-            0% { transform: scaleX(-1) rotate(-30deg) scaleY(0.9); }
-            100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); }
-        }
-                /* Spell Effect */
-                .spell-effect {
-            position: fixed;
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 20%, transparent);
-            border-radius: 50%;
-            animation: spell-burst 1s ease-out forwards;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-        }
-
-        @keyframes spell-burst {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-        }
-
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem; /* Reduced font size */
-            text-shadow: 0 0 15px rgba(161, 63, 226, 0.5);
-            margin-bottom: 1.5rem;
-            letter-spacing: 4px;
-            background: linear-gradient(45deg, #c13fe2, #9e0ff1);
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleGlow 3s infinite alternate;
-        }
-
-        .quote {
-            font-size: 1.5rem; /* Slightly reduced font size */
-            margin: 20px auto;
-            padding: 2rem;
-            line-height: 1.6;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            border: 1px solid rgba(226, 180, 63, 0);
-            max-width: 700px;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 3s ease-in-out;
-        }
-        .quote::before, .quote::after {
-            content: '"';
-            font-family: 'Cinzel', serif;
-            font-size: 4rem;
-            position: absolute;
-            opacity: 0.2;
-            color: #c13fe2;
-        }
-
-        .quote::before {
-            top: -10px;
-            left: 10px;
-        }
-
-        .quote::after {
-            bottom: -30px;
-            right: 10px;
-        }
-
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes titleGlow {
-            0% { text-shadow: 0 0 15px rgba(183, 0, 255, 0.3); }
-            100% { text-shadow: 0 0 25px rgba(255, 74, 210, 0.7); }
-        }
-
-        @keyframes snitchFloat {
-            0% {
-                left: -50px;
-                top: 20%;
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-            25% {
-                left: 60%;
-                top: 70%;
-                transform: translate(-50%, -50%) rotate(180deg) scale(0.8);
-            }
-            50% {
-                left: 100%;
-                top: 40%;
-                transform: translate(0, 0) rotate(360deg) scale(1.2);
-            }
-            75% {
-                left: 40%;
-                top: 30%;
-                transform: translate(-50%, -50%) rotate(540deg) scale(0.9);
-            }
-            100% {
-                left: -50px;
-                top: 20%;
-                transform: translate(0, 0) rotate(720deg) scale(1);
-            }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.8;  transform: scale(1); }
-            50% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        } 
-
-        /* Media Queries for responsiveness */
-        @media screen and (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-                max-width: 90%;
-            }
-
-            h1 {
-                font-size: 2.5rem; /* Adjusting for smaller screens */
-            }
-
-            .quote {
-                font-size: 1.3rem; /* Adjusting for smaller screens */
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            h1 {
-                font-size: 2rem; /* Adjusting for very small screens */
-            }
-
-            .quote {
-                font-size: 1.2rem; /* Adjusting for very small screens */
-            }
-
-            .container {
-                padding: 1rem;
-                max-width: 95%;
-            }
-        }
-
-
-
-    </style>
-</head>
-<body class="not-loaded"></body>
-
-
-<div class="golden-snitch-container">
-    <div class="snitch">
-        <div class="wing wing-left"></div>
-        <div class="wing wing-right"></div>
-    </div>
-</div>
-
-<body>
-    <div class="stars" id="starsContainer"></div>
-    <div class="container">
-        <div class="snitch"></div>
-        <h1>Dear Maram</h1>
-        <div class="quote" id="randomMessage"></div>
-    </div>
-
-    <script>
-        // Create stars with improved distribution
-        const starsContainer = document.getElementById('starsContainer');
-        for (let i = 0; i < 150; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 3}s`;
-            star.style.opacity = Math.random() * 0.8 + 0.2;
-            starsContainer.appendChild(star);
-        }
-
-         // Event listeners
-         document.body.addEventListener('click', (e) => {
-            const spell = document.createElement('div');
-            spell.className = 'spell-effect';
-            spell.style.left = `${e.clientX}px`;
-            spell.style.top = `${e.clientY}px`;
-            document.body.appendChild(spell);
-            setTimeout(() => spell.remove(), 1000);
-        });
-
-        document.body.addEventListener('touchstart', (e) => {
-            const spell = document.createElement('div');
-            spell.className = 'spell-effect';
-            spell.style.left = `${e.touches[0].clientX}px`;
-            spell.style.top = `${e.touches[0].clientY}px`;
-            document.body.appendChild(spell);
-            setTimeout(() => spell.remove(), 1000);
-        }, { passive: true });
-
-        // Animation loop
-        function animate() {
-            createFallingStar();
-            requestAnimationFrame(animate);
-        }
-        requestAnimationFrame(animate);
-
-        // Create magical flowers with improved positioning
-        function createFlower() {
-            const flower = document.createElement('div');
-            flower.className = 'magical-flower';
-            flower.style.left = `${Math.random() * 90}%`;
-            flower.style.top = `${Math.random() * 90}%`;
-            flower.style.animation = `flowerFloat ${4 + Math.random() * 4}s infinite ease-in-out`;
-            flower.style.opacity = 0.8;
-
-            // Create petals with varied colors
-            const colors = [
-                ['#ff69b4', '#da70d6'],
-                ['#9b59b6', '#6a0dad'],
-                ['#3498db', '#6a0dad'],
-                ['#e74c3c', '#6a0dad']
-            ];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-            for (let i = 0; i < 8; i++) {
-                const petal = document.createElement('div');
-                petal.className = 'petal';
-                petal.style.transform = `rotate(${i * 45}deg) translateX(15px)`;
-                petal.style.background = `radial-gradient(circle at 60% 60%, ${randomColor[0]}, ${randomColor[1]})`;
-                petal.style.animationDelay = `${i * 0.1}s`;
-                flower.appendChild(petal);
-            }
-
-            const center = document.createElement('div');
-            center.className = 'flower-center';
-            flower.appendChild(center);
-
-            document.body.appendChild(flower);
-        }
-
-        // Create flowers
-        for (let i = 0; i < 8; i++) {
-            createFlower();
-        }
-
-        const messages = [
-        "🧐 “When you have eliminated the impossible, whatever remains, however improbable, must be the truth.”  The truth, Maram, is that you are strong, loved, and this sadness will pass. And I must say, your hijab choice was quite brilliant! 💜",
-            "🔍 The case of Maram Feeling Down has only one logical conclusion: You need a reminder that you are truly one-of-a-kind. Imalways here, my dear Watson. Also, thank you for the hijab color decision—it was a moment of pure deduction! 💜",
-            "🕰️ Even the greatest detectives need a break. Take your time, breathe, and know that Im here. Oh, and that hijab? A masterpiece! 💜",
-            "I suspect magic is involved. Tell me the truth, Maram… are you secretly a wizard, or is it just impossible for you not to be effortlessly beautiful?",
-            "Maram, even in the darkest times, remember that light always returns—just like magic. You are a Patronus in my life, and Im grateful for you. Also, thank you for letting me choose your hijab color—it made my day! 💜",
-            "🦉 If I had an owl, Id send you a letter sealed with magic, reminding you how amazing you are. Dark times pass, and light always returns—just like in every great story. Also, you totally rocked that hijab color! 💜✨",
-            "🕯️ Even the Marauders Map wouldnt show a path as bright as yours. You are stronger than any sadness, and Im always here to remind you of that. Thanks for letting me choose your hijab color—it made my day! 💜",
-            "You are my fire ,The one desire ,Believe when I say ,I want it that way",
-            "Tell me why Ain't nothin' but a heartache",
-            "Tell me why Ain't nothing but a mistake",
-            "U are the only case i cant solve (Detective Conan)",
-            "Maram, if love were a spell, you’d be my Expecto Patronum, always chasing away the darkness and filling my world with light.",
-            "Maram, if our love were a fairytale, you’d be the enchanted light that guides me through the darkest of forests.",
-            "Tell me why I never wanna hear you say I want it that way",
-            "If I had a love potion, I wouldn’t need it—because my heart already belongs to you, no spell required. If I were at Hogwarts, I’d spend all my time sneaking into the library just to find a book that could explain how someone could be as amazing as you. But no words, no magic, no story could ever do you justice.",
-       
-          ];
-
-        // Display a random message every time the page is reloaded
-        const randomIndex = Math.floor(Math.random() * messages.length);
-        const messageElement = document.getElementById("randomMessage");
-        messageElement.textContent = messages[randomIndex];
-
-                // Optimized star creation
-                let lastStarTime = 0;
-        const STAR_INTERVAL = 1000;
-
-        function createFallingStar() {
-            const now = Date.now();
-            if (now - lastStarTime < STAR_INTERVAL) return;
-            
-            const star = document.createElement('div');
-            star.className = 'falling-star';
-            star.style.left = Math.random() * window.innerWidth + 'px';
-            document.body.appendChild(star);
-            
-            setTimeout(() => star.remove(), 3000);
-            lastStarTime = now;
-        }
-
-    </script>
-</body>
-    
-<body class="not-loaded">
-  <body class="not-loaded">
-    <div class="letter-container">
-      <div class="letter">
-        <div class="seal">H</div>
-      </div>
-    </div>
-  
-    <script>
-      const letter = document.querySelector('.letter');
-  
-      // Function to open a new page when the letter is clicked
-      function openNewPage() {
-        // Open a new page (replace 'new-page.html' with the URL of the page you want to open)
-        window.open('maram.html', '_blank');
+    /* Media Queries for Responsiveness */
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+        max-width: 90%;
       }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .quote {
+        font-size: 1.3rem;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .quote {
+        font-size: 1.2rem;
+      }
+
+      .container {
+        padding: 1rem;
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="starsContainer"></div>
+  <div class="container">
+    <h1>Dear Maram</h1>
+    <div class="quote" id="randomMessage"></div>
+  </div>
+
+  <div class="golden-snitch-container">
+    <div class="snitch">
+      <div class="wing wing-left"></div>
+      <div class="wing wing-right"></div>
+    </div>
+  </div>
+
+  <div class="letter-container">
+    <div class="letter">
+      <div class="seal">H</div>
+    </div>
+  </div>
+
+  <script>
+    // Create stars with improved distribution
+    const starsContainer = document.getElementById('starsContainer');
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      star.style.opacity = Math.random() * 0.8 + 0.2;
+      starsContainer.appendChild(star);
+    }
+
+    // Event listeners for spell effects
+    document.body.addEventListener('click', (e) => {
+      const spell = document.createElement('div');
+      spell.className = 'spell-effect';
+      spell.style.left = `${e.clientX}px`;
+      spell.style.top = `${e.clientY}px`;
+      document.body.appendChild(spell);
+      setTimeout(() => spell.remove(), 1000);
+    });
+
+    document.body.addEventListener('touchstart', (e) => {
+      const spell = document.createElement('div');
+      spell.className = 'spell-effect';
+      spell.style.left = `${e.touches[0].clientX}px`;
+      spell.style.top = `${e.touches[0].clientY}px`;
+      document.body.appendChild(spell);
+      setTimeout(() => spell.remove(), 1000);
+    }, { passive: true });
+
+    // Animation loop for falling stars
+    function animate() {
+      createFallingStar();
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    // Create magical flowers with improved positioning
+    function createFlower() {
+      const flower = document.createElement('div');
+      flower.className = 'magical-flower';
+      flower.style.left = `${Math.random() * 90}%`;
+      flower.style.top = `${Math.random() * 90}%`;
+      flower.style.animation = `flowerFloat ${4 + Math.random() * 4}s infinite ease-in-out`;
+      flower.style.opacity = 0.8;
+
+      const colors = [
+        ['#ff69b4', '#da70d6'],
+        ['#9b59b6', '#6a0dad'],
+        ['#3498db', '#6a0dad'],
+        ['#e74c3c', '#6a0dad']
+      ];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+      for (let i = 0; i < 8; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.transform = `rotate(${i * 45}deg) translateX(15px)`;
+        petal.style.background = `radial-gradient(circle at 60% 60%, ${randomColor[0]}, ${randomColor[1]})`;
+        petal.style.animationDelay = `${i * 0.1}s`;
+        flower.appendChild(petal);
+      }
+
+      const center = document.createElement('div');
+      center.className = 'flower-center';
+      flower.appendChild(center);
+
+      document.body.appendChild(flower);
+    }
+
+    // Create flowers
+    for (let i = 0; i < 8; i++) {
+      createFlower();
+    }
+
+    const messages = [
+     "Maram, you’re my Patronus. In the darkest of times, you light up my world like Expecto Patronum. No Dementor could ever stand a chance against your brilliance. 💜✨",
+     "If I were a wizard, I’d spend my days brewing Felix Felicis just to be lucky enough to see you smile. You’re my liquid luck, Maram. 💜",
+     "You’re the Marauder’s Map to my heart. No matter where I go, it always leads me back to you. Mischief managed. 💜",
+     "Maram, you’re my Golden Snitch. Elusive, radiant, and worth chasing for a lifetime. I’d catch you a thousand times over. 💜",
+     "If love were a spell, it would be Amortentia—and you’d be the scent it carries. You’re enchanting, Maram. 💜",
+     "You’re my Time-Turner, Maram. With you, every moment feels like I’ve been given extra time to fall even more in love. 💜",
+     "Maram, you’re my Hogwarts. No matter where life takes me, you’ll always feel like home. 💜",
+     "You’re my Pensieve, Maram. Every memory with you is one I’d relive over and over again. 💜",
+     "If I were in the Triwizard Tournament, you’d be my prize. No dragon, merperson, or maze could keep me from you. 💜",
+     "Maram, you’re my Invisibility Cloak. With you, I feel safe, seen, and truly myself. 💜",
+     "You’re my Portkey, Maram. The moment I met you, I was whisked away into a world of magic and love. 💜",
+     "Maram, you’re my Howler—but in the best way. You’ve captured my heart, and I’ll never stop shouting it from the rooftops. 💜",
+     "If I were a Quidditch player, you’d be my Snitch. Fast, golden, and impossible to let go of. 💜",
+     "Maram, you’re my Room of Requirement. Whenever I need love, comfort, or magic, you’e always there. 💜",
+     "You’re my Elder Wand, Maram. With you, I feel unstoppable, powerful, and complete. 💜",
+     "I suspect magic is involved. Tell me the truth, Maram… are you secretly a wizard, or is it just impossible for you not to be effortlessly beautiful? 💜",
+     "Maram, even in the darkest times, remember that light always returns—just like magic. You are a Patronus in my life, and I’m grateful for you. 💜",
+     "If I had a love potion, I wouldn need it—because my heart already belongs to you, no spell required. 💜",
+     "If I were at Hogwarts, Id spend all my time sneaking into the library just to find a book that could explain how someone could be as amazing as you. But no words, no magic, no story could ever do you justice. 💜",
+     "Maram, youre my Firebolt. With you, I feel like Im flying 💜",
+     "Maram, youre my Mirror of Erised. When I look at you, I see everything Ive ever wanted. 💜",
+     "Can’t you see? Yeah, honey you are for me",
+     "All the time, my baby, you on my mind",
+     "And I don’t know why, yeah, but the feelin’ is fine",
+     "Every time when I look in your eyes",
+     "I smile with pride, happy that you’re mine",
+     "You are the best thing that has happened to me, ah",
   
-      // Event listener for the letter click
-      letter.addEventListener('click', () => {
-        letter.classList.add('opened'); // Open the letter animation
-        setTimeout(openNewPage, 500); // Open the new page after a short delay
+    ];
+
+    // Display a random message every time the page is reloaded
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const messageElement = document.getElementById("randomMessage");
+    messageElement.textContent = messages[randomIndex];
+
+    // Optimized star creation
+    let lastStarTime = 0;
+    const STAR_INTERVAL = 1000;
+
+    function createFallingStar() {
+      const now = Date.now();
+      if (now - lastStarTime < STAR_INTERVAL) return;
+
+      const star = document.createElement('div');
+      star.className = 'falling-star';
+      star.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(star);
+
+      setTimeout(() => star.remove(), 3000);
+      lastStarTime = now;
+    }
+
+    // Letter click event
+    const letter = document.querySelector('.letter');
+    function openNewPage() {
+      window.open('maram.html', '_blank');
+    }
+
+    letter.addEventListener('click', () => {
+      letter.classList.add('opened');
+      setTimeout(openNewPage, 500);
+    
       });
     </script>
   </script>
   <div class="night"></div>
   <div class="flowers">
+    <div class="flower flower--1">
+      <div class="flower__leafs flower__leafs--1">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        
+
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+        <div class="flower__line__leaf flower__line__leaf--5"></div>
+        <div class="flower__line__leaf flower__line__leaf--6"></div>
+      </div>
+    </div>
+
+    <div class="flower flower--2">
+      <div class="flower__leafs flower__leafs--2">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <div class="flower flower--3">
+      <div class="flower__leafs flower__leafs--3">
+        <div class="flower__leaf flower__leaf--1"></div>
+        <div class="flower__leaf flower__leaf--2"></div>
+        <div class="flower__leaf flower__leaf--3"></div>
+        <div class="flower__leaf flower__leaf--4"></div>
+        <div class="flower__white-circle"></div>
+
+        <div class="flower__light flower__light--1"></div>
+        <div class="flower__light flower__light--2"></div>
+        <div class="flower__light flower__light--3"></div>
+        <div class="flower__light flower__light--4"></div>
+        <div class="flower__light flower__light--5"></div>
+        <div class="flower__light flower__light--6"></div>
+        <div class="flower__light flower__light--7"></div>
+        <div class="flower__light flower__light--8"></div>
+
+      </div>
+      <div class="flower__line">
+        <div class="flower__line__leaf flower__line__leaf--1"></div>
+        <div class="flower__line__leaf flower__line__leaf--2"></div>
+        <div class="flower__line__leaf flower__line__leaf--3"></div>
+        <div class="flower__line__leaf flower__line__leaf--4"></div>
+      </div>
+    </div>
+
+    <div class="grow-ans" style="--d:1.2s">
+      <div class="flower__g-long">
+        <div class="flower__g-long__top"></div>
+        <div class="flower__g-long__bottom"></div>
+      </div>
+    </div>
+
+    <div class="growing-grass">
+      <div class="flower__grass flower__grass--1">
+        <div class="flower__grass--top"></div>
+        <div class="flower__grass--bottom"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+        <div class="flower__grass__overlay"></div>
+      </div>
+    </div>
+
+    <div class="growing-grass">
+      <div class="flower__grass flower__grass--2">
+        <div class="flower__grass--top"></div>
+        <div class="flower__grass--bottom"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+        <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+        <div class="flower__grass__overlay"></div>
+      </div>
+    </div>
+
+    <div class="grow-ans" style="--d:2.4s">
+      <div class="flower__g-right flower__g-right--1">
+        <div class="leaf"></div>
+      </div>
+    </div>
+
+    <div class="grow-ans" style="--d:2.8s">
+      <div class="flower__g-right flower__g-right--2">
+        <div class="leaf"></div>
+      </div>
+    </div>
+
+    <div class="grow-ans" style="--d:2.8s">
+      <div class="flower__g-front">
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8">
+          <div class="flower__g-front__leaf"></div>
+        </div>
+        <div class="flower__g-front__line"></div>
+      </div>
+    </div>
+
+    <div class="grow-ans" style="--d:3.2s">
+      <div class="flower__g-fr">
+        <div class="leaf"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div>
+        <div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--0">
+      <div class="grow-ans" style="--d:3s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:2.2s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.4s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.6s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--1">
+      <div class="grow-ans" style="--d:3.6s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.8s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:4s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.2s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--2">
+      <div class="grow-ans" style="--d:4s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.2s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.4s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.6s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--3">
+      <div class="grow-ans" style="--d:4s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.2s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:3s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.6s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--4">
+      <div class="grow-ans" style="--d:4s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.2s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:3s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.6s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--5">
+      <div class="grow-ans" style="--d:4s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.2s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:3s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.6s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--6">
+      <div class="grow-ans" style="--d:4.2s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.4s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.6s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:4.8s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+
+    <div class="long-g long-g--7">
+      <div class="grow-ans" style="--d:3s">
+        <div class="leaf leaf--0"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.2s">
+        <div class="leaf leaf--1"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.5s">
+        <div class="leaf leaf--2"></div>
+      </div>
+      <div class="grow-ans" style="--d:3.6s">
+        <div class="leaf leaf--3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flowers2"></div>
     <div class="flower flower--1">
       <div class="flower__leafs flower__leafs--1">
         <div class="flower__leaf flower__leaf--1"></div>

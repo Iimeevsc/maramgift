@@ -7,7 +7,7 @@
 }
 
 :root {
-  --dark-color: #f3f3f32d;
+  --dark-color: #f3f3f300;
 }
 
 body {
@@ -22,8 +22,15 @@ body {
 
 .flowers {
   position: relative;
-  transform: scale(0.7) translateZ(600px);
-  z-index: -1;
+  transform: scale(0.5) translateZ(600px);
+  z-index: 02;
+  left: 34vmin;
+}
+.flowers2 {
+  position: relative;
+  transform: scale(0.6) translateZ(600px);
+  z-index: 02;
+  right: 53vmin;
 }
 
 .flower {
@@ -32,7 +39,8 @@ body {
   transform-origin: bottom center;
   z-index: 0;
   --fl-speed: 0.8s;
-  transform: translateZ(150%);
+
+  transform: translateX(-50%); /* Move flower to the left */
   
 }
 .flower--1 {
@@ -235,6 +243,7 @@ body {
   border-radius: 50%;
   filter: blur(0.2vmin);
   animation: light-ans 4s linear infinite backwards;
+  z-index: -1;
 }
 .flower__light:nth-child(odd) {
   background-color: #9523ff;
