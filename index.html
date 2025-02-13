@@ -5,30 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gift Maram</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <script src="index.js"></script>
-  <script src="style.css"></script>
-    <audio autoplay loop hidden>
-      <source src="background-music.mp3" type="audio/mpeg">
-      <audio id="songPlayer" controls style="display: none;">
-        <source src="your-song.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-    </audio>
-    <div class="magical-flower">
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="petal"></div>
-        <div class="flower-center"></div>
-    </div>
-    <style>
-    /* Enhanced Design */
+  <style>
     :root {
       --hogwarts-purple: #6a0dad;
       --magic-sparkle: #ab30f3;
@@ -92,23 +70,25 @@
       animation: fadeIn 3s ease-in-out;
     }
 
-    .quote::before, .quote::after {
-      content: '"';
+    .magic-button {
+      background: linear-gradient(45deg, #6a0dad, #ab30f3);
+      border: 2px solid #ffd700;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
       font-family: 'Cinzel', serif;
-      font-size: 4rem;
-      position: absolute;
-      opacity: 0.2;
-      color: #c13fe2;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 15px rgba(106, 13, 173, 0.5);
+      font-size: 1.2rem;
+      margin: 15px 0;
     }
 
-    .quote::before {
-      top: -10px;
-      left: 10px;
-    }
-
-    .quote::after {
-      bottom: -30px;
-      right: 10px;
+    .magic-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(106, 13, 173, 0.8);
+      background: linear-gradient(45deg, #ab30f3, #6a0dad);
     }
 
     @keyframes float {
@@ -126,7 +106,6 @@
       100% { opacity: 1; }
     }
 
-    /* Enhanced Stars */
     .stars {
       position: absolute;
       top: 0;
@@ -152,7 +131,6 @@
       50% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* Enhanced Falling Stars */
     .falling-star {
       position: fixed;
       width: 30px;
@@ -168,7 +146,6 @@
       100% { transform: translateY(100vh) rotate(45deg) translateX(100vh); opacity: 0; }
     }
 
-    /* Enhanced Golden Snitch */
     .golden-snitch-container {
       position: fixed;
       pointer-events: none;
@@ -226,7 +203,6 @@
       100% { transform: scaleX(-1) rotate(30deg) scaleY(1.1); }
     }
 
-    /* Enhanced Spell Effect */
     .spell-effect {
       position: fixed;
       width: 50px;
@@ -243,7 +219,6 @@
       100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
     }
 
-    /* Enhanced Letter Animation */
     .letter-container {
       position: fixed;
       top: -100px;
@@ -320,40 +295,20 @@
       100% { top: 100%; transform: translateX(-50%) rotate(0deg); }
     }
 
-    @keyframes letterSway {
-      0%, 100% { transform: rotate(-3deg); }
-      50% { transform: rotate(3deg); }
-    }
-
-    /* Media Queries for Responsiveness */
+    /* Media Queries */
     @media screen and (max-width: 768px) {
       .container {
         padding: 1.5rem;
         max-width: 90%;
       }
-
-      h1 {
-        font-size: 2.5rem;
-      }
-
-      .quote {
-        font-size: 1.3rem;
-      }
+      h1 { font-size: 2.5rem; }
+      .quote { font-size: 1.3rem; }
     }
 
     @media screen and (max-width: 480px) {
-      h1 {
-        font-size: 2rem;
-      }
-
-      .quote {
-        font-size: 1.2rem;
-      }
-
-      .container {
-        padding: 1rem;
-        max-width: 95%;
-      }
+      h1 { font-size: 2rem; }
+      .quote { font-size: 1.2rem; }
+      .container { padding: 1rem; max-width: 95%; }
     }
   </style>
 </head>
@@ -377,8 +332,13 @@
     </div>
   </div>
 
+  <audio id="songPlayer" controls style="display: none;">
+    <source src="your-song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
   <script>
-    // Create stars with improved distribution
+    // Stars
     const starsContainer = document.getElementById('starsContainer');
     for (let i = 0; i < 150; i++) {
       const star = document.createElement('div');
@@ -390,72 +350,12 @@
       starsContainer.appendChild(star);
     }
 
-    // Event listeners for spell effects
-    document.body.addEventListener('click', (e) => {
-      const spell = document.createElement('div');
-      spell.className = 'spell-effect';
-      spell.style.left = `${e.clientX}px`;
-      spell.style.top = `${e.clientY}px`;
-      document.body.appendChild(spell);
-      setTimeout(() => spell.remove(), 1000);
-    });
-
-    document.body.addEventListener('touchstart', (e) => {
-      const spell = document.createElement('div');
-      spell.className = 'spell-effect';
-      spell.style.left = `${e.touches[0].clientX}px`;
-      spell.style.top = `${e.touches[0].clientY}px`;
-      document.body.appendChild(spell);
-      setTimeout(() => spell.remove(), 1000);
-    }, { passive: true });
-
-    // Animation loop for falling stars
-    function animate() {
-      createFallingStar();
-      requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
-
-    // Create magical flowers with improved positioning
-    function createFlower() {
-      const flower = document.createElement('div');
-      flower.className = 'magical-flower';
-      flower.style.left = `${Math.random() * 90}%`;
-      flower.style.top = `${Math.random() * 90}%`;
-      flower.style.animation = `flowerFloat ${4 + Math.random() * 4}s infinite ease-in-out`;
-      flower.style.opacity = 0.8;
-
-      const colors = [
-        ['#ff69b4', '#da70d6'],
-        ['#9b59b6', '#6a0dad'],
-        ['#3498db', '#6a0dad'],
-        ['#e74c3c', '#6a0dad']
-      ];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-      for (let i = 0; i < 8; i++) {
-        const petal = document.createElement('div');
-        petal.className = 'petal';
-        petal.style.transform = `rotate(${i * 45}deg) translateX(15px)`;
-        petal.style.background = `radial-gradient(circle at 60% 60%, ${randomColor[0]}, ${randomColor[1]})`;
-        petal.style.animationDelay = `${i * 0.1}s`;
-        flower.appendChild(petal);
-      }
-
-      const center = document.createElement('div');
-      center.className = 'flower-center';
-      flower.appendChild(center);
-
-      document.body.appendChild(flower);
-    }
-
-    // Create flowers
-    for (let i = 0; i < 8; i++) {
-      createFlower();
-    }
-
+    // Messages with music button
     const messages = [
-     "Maram, you’re my Patronus. In the darkest of times, you light up my world like Expecto Patronum. No Dementor could ever stand a chance against your brilliance. 💜✨",
+      "Maram, you’re my Patronus. In the darkest of times, you light up my world like Expecto Patronum...",
+      `<button onclick="playSong()" class="magic-button">🎵 When i close my eyes 🎵</button>`,
+      "Maram, you’re my Firebolt. With you, I feel like Im flying 💜",
+      "Maram, you’re my Patronus. In the darkest of times, you light up my world like Expecto Patronum. No Dementor could ever stand a chance against your brilliance. 💜✨",
      "If I were a wizard, I’d spend my days brewing Felix Felicis just to be lucky enough to see you smile. You’re my liquid luck, Maram. 💜",
      "You’re the Marauder’s Map to my heart. No matter where I go, it always leads me back to you. Mischief managed. 💜",
      "Maram, you’re my Golden Snitch. Elusive, radiant, and worth chasing for a lifetime. I’d catch you a thousand times over. 💜",
@@ -502,46 +402,65 @@
      "If throwing chairs was an Olympic sport, you’d have gold—but in my heart, you’ve already won first place.",
      "I don’t need Felix Felicis to feel lucky—I just need to survive another day without getting hit by one of your chairs.",
      "Some girls send winks, some send texts, but you? You send FLYING CHAIRS—and somehow, that’s the most attractive thing ever.",
+     `<button onclick="playSong()" class="magic-button">🎵 Play Our Song 🎵</button>`,
 
 
   
+      // ... (Add all other messages from original code here)
     ];
 
-    // Display a random message every time the page is reloaded
     const randomIndex = Math.floor(Math.random() * messages.length);
-    const messageElement = document.getElementById("randomMessage");
-    messageElement.textContent = messages[randomIndex];
+    document.getElementById("randomMessage").innerHTML = messages[randomIndex];
 
-    // Optimized star creation
+    // Audio control
+    function playSong() {
+      const audioPlayer = document.getElementById('songPlayer');
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+        const spell = document.createElement('div');
+        spell.className = 'spell-effect';
+        spell.style.left = '50%';
+        spell.style.top = '50%';
+        document.body.appendChild(spell);
+        setTimeout(() => spell.remove(), 1000);
+      } else {
+        audioPlayer.pause();
+      }
+    }
+
+    // Letter interaction
+    document.querySelector('.letter').addEventListener('click', () => {
+      document.querySelector('.letter').classList.add('opened');
+      setTimeout(() => window.open('maram.html', '_blank'), 500);
+    });
+
+    // Falling stars
     let lastStarTime = 0;
-    const STAR_INTERVAL = 1000;
-
     function createFallingStar() {
       const now = Date.now();
-      if (now - lastStarTime < STAR_INTERVAL) return;
-
+      if (now - lastStarTime < 1000) return;
       const star = document.createElement('div');
       star.className = 'falling-star';
       star.style.left = Math.random() * window.innerWidth + 'px';
       document.body.appendChild(star);
-
       setTimeout(() => star.remove(), 3000);
       lastStarTime = now;
     }
+    setInterval(createFallingStar, 1000);
 
-    // Letter click event
-    const letter = document.querySelector('.letter');
-    function openNewPage() {
-      window.open('maram.html', '_blank');
-    }
-
-    letter.addEventListener('click', () => {
-      letter.classList.add('opened');
-      setTimeout(openNewPage, 500);
-    
-      });
-    </script>
+    // Click effects
+    document.body.addEventListener('click', (e) => {
+      const spell = document.createElement('div');
+      spell.className = 'spell-effect';
+      spell.style.left = `${e.clientX}px`;
+      spell.style.top = `${e.clientY}px`;
+      document.body.appendChild(spell);
+      setTimeout(() => spell.remove(), 1000);
+    });
   </script>
+</body>
+</html>
+
   <div class="night"></div>
   <div class="flowers">
     <div class="flower flower--1">
