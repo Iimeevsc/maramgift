@@ -1,4 +1,13 @@
-
+function createMagicParticles() {
+  const particleCount = 30;
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'magic-particle';
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.animationDelay = `${Math.random() * 8}s`; // Increased delay range
+    document.body.appendChild(particle);
+  }
+}
 onload = () => {
     const c = setTimeout(() => {
       document.body.classList.remove("not-loaded");
