@@ -352,6 +352,63 @@
         opacity: 1;
       }
     }
+      /* Add these new animations */
+      @keyframes magicPulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100vh) rotate(360deg); }
+    }
+
+    @keyframes butterflyFlutter {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    /* New magical elements */
+    .magic-particle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(#ff99ff, #cc00ff);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: magicPulse 2s infinite, floatUp 15s linear infinite;
+    }
+
+    .glowing-orb {
+      position: fixed;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(rgba(255, 153, 255, 0.4), transparent 70%);
+      border-radius: 50%;
+      filter: blur(15px);
+      animation: float 8s infinite ease-in-out;
+    }
+
+    .butterfly {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 64 64"><path fill="%23ff99ff" d="M32 4C16 4 4 16 4 32s12 28 28 28 28-12 28-28S48 4 32 4zm0 40c-6.6 0-12-5.4-12-12s5.4-12 12-12 12 5.4 12 12-5.4 12-12 12z"/></svg>');
+      animation: butterflyFlutter 1.5s infinite ease-in-out;
+    }
+
+    /* Constellation effect */
+    .constellation {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .star-line {
+      stroke: rgba(255, 255, 255, 0.2);
+      stroke-width: 1;
+    }
   </style>
 </head>
 <body>
@@ -378,8 +435,137 @@
     <source src="your-song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
-
+  <svg class="constellation" id="constellation"></svg>
   <script>
+     // Add these new animation functions
+     function createMagicParticles() {
+      const particleCount = 30;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'magic-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        document.body.appendChild(particle);
+      }
+    }
+
+    function createGlowingOrbs() {
+      const orbCount = 4;
+      for (let i = 0; i < orbCount; i++) {
+        const orb = document.createElement('div');
+        orb.className = 'glowing-orb';
+        orb.style.left = `${Math.random() * 100}%`;
+        orb.style.top = `${Math.random() * 100}%`;
+        document.body.appendChild(orb);
+      }
+    }
+
+    function createButterflies() {
+      const butterflyCount = 3;
+      for (let i = 0; i < butterflyCount; i++) {
+        const butterfly = document.createElement('div');
+        butterfly.className = 'butterfly';
+        butterfly.style.left = `${Math.random() * 100}%`;
+        butterfly.style.animation = `butterflyFlutter ${5 + Math.random() * 5}s infinite ${Math.random() * 2}s`;
+        document.body.appendChild(butterfly);
+      }
+    }
+
+    // Constellation effect
+    function createConstellation() {
+      const svg = document.getElementById('constellation');
+      const stars = 25;
+      
+      // Create stars
+      for (let i = 0; i < stars; i++) {
+        const star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        star.setAttribute("cx", Math.random() * 100 + "%");
+        star.setAttribute("cy", Math.random() * 100 + "%");
+        star.setAttribute("r", Math.random() * 2 + 1);
+        star.setAttribute("fill", "white");
+        star.style.opacity = Math.random() * 0.5 + 0.5;
+        svg.appendChild(star);
+      }
+
+      // Create connections
+      setInterval(() => {
+        const existingLines = document.querySelectorAll('.star-line');
+        existingLines.forEach(line => line.remove());
+        
+        const points = Array.from(svg.children)
+          .filter(child => child.tagName === 'circle')
+          .map(circle => ({
+            x: parseFloat(circle.getAttribute("cx")),
+            y: parseFloat(circle.getAttribute("cy"))
+          }));
+
+        points.forEach((startPoint, i) => {
+          points.slice(i + 1).forEach(endPoint => {
+            if (Math.random() < 0.03 && distance(startPoint, endPoint) < 30) {
+              const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+              line.setAttribute("x1", startPoint.x + "%");
+              line.setAttribute("y1", startPoint.y + "%");
+              line.setAttribute("x2", endPoint.x + "%");
+              line.setAttribute("y2", endPoint.y + "%");
+              line.className = "star-line";
+              svg.appendChild(line);
+            }
+          });
+        });
+      }, 2000);
+
+      function distance(a, b) {
+        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+      }
+    }
+
+    // Initialize new animations
+    createMagicParticles();
+    createGlowingOrbs();
+    createButterflies();
+    createConstellation();
+
+    // Enhanced flower animation
+    function createFlower() {
+      const flower = document.createElement('div');
+      flower.className = 'flower';
+      flower.innerHTML = '🌸';
+      flower.style.cssText = `
+        left: ${Math.random() * 100}%;
+        animation: flowerFall ${3 + Math.random() * 5}s linear infinite;
+        filter: hue-rotate(${Math.random() * 360}deg);
+      `;
+      document.body.appendChild(flower);
+    }
+
+    // Replace existing setInterval with optimized animation loop
+    let lastFrame = 0;
+    function animateFlowers(timestamp) {
+      if (timestamp - lastFrame > 400) {
+        createFlower();
+        lastFrame = timestamp;
+      }
+      requestAnimationFrame(animateFlowers);
+    }
+    requestAnimationFrame(animateFlowers);
+
+    // Enhanced click effect
+    document.body.addEventListener('click', (e) => {
+      // Create 3D rotating heart
+      const heart = document.createElement('div');
+      heart.className = 'magic-particle';
+      heart.style.cssText = `
+        left: ${e.clientX}px;
+        top: ${e.clientY}px;
+        animation: floatUp 3s linear forwards;
+        background: radial-gradient(#ff3366, #ff0000);
+        width: 20px;
+        height: 20px;
+        clip-path: polygon(50% 0%, 100% 35%, 85% 60%, 50% 100%, 15% 60%, 0% 35%);
+      `;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    });
     // Stars
     const starsContainer = document.getElementById('starsContainer');
     for (let i = 0; i < 150; i++) {
@@ -455,10 +641,9 @@
      "every time i see u make me say اليسم",
      "if i was on garden of flower u will be the only flower i see i like i love and i want.",
      "every time u smile u make me thansk ur dad to bring a purple flower like u.",
+"You ask me why I chose you. Yes, you have a beautiful face, mesmerizing eyes, a captivating voice, and an incredible personality—but that’s not why I chose you. I chose you because I love you.",
+"I don’t have a perfect answer for why I like you—I just do. It’s not just one thing, not just your smile, your laugh, or the way you talk. It’s you. And sometimes, the best feelings don’t need a reason.",
      
-
-
-  
       // ... (Add all other messages from original code here)
     ];
 
@@ -523,6 +708,15 @@
 
     }
     setInterval(createFlower, 400);
+
+     // Initialize flower positions
+     function positionFlowers() {
+      document.querySelectorAll('.flower').forEach(flower => {
+        flower.style.bottom = '20px';
+      });
+    }
+    window.addEventListener('resize', positionFlowers);
+    positionFlowers();
 
   </script>
 </body>
